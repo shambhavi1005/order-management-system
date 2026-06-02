@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FiBox,
-  FiUsers,
-  FiShoppingCart,
-  FiDollarSign,
-  FiAlertTriangle,
-  FiPlusCircle,
-} from "react-icons/fi";
+
 
 import { getProducts, getCustomers, getOrders } from "../api";
 
