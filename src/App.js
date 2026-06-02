@@ -12,21 +12,21 @@ export default function App() {
       <div className="app">
         <aside className="sidebar">
           <div className="logo">
-            <span className="logo-icon">⬡</span>
+            <span className="logo-icon">🏪</span>
             <span className="logo-text">InvTrack</span>
           </div>
           <nav>
             <NavLink to="/" end className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>
-              <span>◈</span> Dashboard
+              <span>📊</span> Dashboard
             </NavLink>
             <NavLink to="/products" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>
-              <span>▦</span> Products
+              <span>📦</span> Products
             </NavLink>
             <NavLink to="/customers" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>
-              <span>◉</span> Customers
+              <span>👥</span> Customers
             </NavLink>
             <NavLink to="/orders" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>
-              <span>◎</span> Orders
+              <span>🛒</span> Orders
             </NavLink>
           </nav>
         </aside>
