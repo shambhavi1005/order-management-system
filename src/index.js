@@ -1,8 +1,14 @@
-import axios from "axios";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
-const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000",
-});
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
 export const getProducts = () => API.get("/products");
 export const createProduct = (data) => API.post("/products", data);
