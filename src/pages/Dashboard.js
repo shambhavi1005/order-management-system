@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-
 import { getProducts, getCustomers, getOrders } from "../api";
 
 export default function Dashboard() {
@@ -14,136 +12,57 @@ export default function Dashboard() {
     getOrders().then((r) => setOrders(r.data)).catch(() => {});
   }, []);
 
-  const revenue = orders.reduce((s, o) => s + o.total_price, 0);
-
-  const lowStock = products.filter((p) => p.stock < 5);
+  const revenue = orders.reduce(
+    (sum, order) => sum + Number(order.total_price || 0),
+    0
+  );
 
   return (
-    <div>
-      <div className="dashboard-hero">
-        <div>
-          <h1 className="hero-title">Operations Dashboard</h1>
-          <p className="hero-subtitle">
-            Real-time inventory and business overview
-          </p>
-        </div>
+    <>
+      <div className="page-header">
+        <h1 className="page-title">Dashboard</h1>
+        <p className="page-subtitle">
+          Inventory & Order Management Overview
+        </p>
       </div>
 
-      <div className="premium-grid">
-        <div className="premium-card">
-          <div className="card-icon purple">
-            <FiDollarSign />
-          </div>
-
-          <div>
-            <div className="card-title">Total Revenue</div>
-            <div className="card-number">
-              ₹{revenue.toLocaleString()}
-            </div>
-            <div className="card-desc">
-              Total revenue generated
-            </div>
+      <div className="stat-grid">
+        <div className="stat-card">
+          <div className="stat-label">Products</div>
+          <div className="stat-value stat-accent">
+            {products.length}
           </div>
         </div>
 
-        <div className="premium-card">
-          <div className="card-icon blue">
-            <FiBox />
-          </div>
-
-          <div>
-            <div className="card-title">Products</div>
-            <div className="card-number">
-              {products.length}
-            </div>
-            <div className="card-desc">
-              Active inventory items
-            </div>
+        <div className="stat-card">
+          <div className="stat-label">Customers</div>
+          <div className="stat-value stat-cyan">
+            {customers.length}
           </div>
         </div>
 
-        <div className="premium-card">
-          <div className="card-icon green">
-            <FiUsers />
-          </div>
-
-          <div>
-            <div className="card-title">Customers</div>
-            <div className="card-number">
-              {customers.length}
-            </div>
-            <div className="card-desc">
-              Registered customers
-            </div>
+        <div className="stat-card">
+          <div className="stat-label">Orders</div>
+          <div className="stat-value stat-amber">
+            {orders.length}
           </div>
         </div>
 
-        <div className="premium-card">
-          <div className="card-icon cyan">
-            <FiShoppingCart />
-          </div>
-
-          <div>
-            <div className="card-title">Orders</div>
-            <div className="card-number">
-              {orders.length}
-            </div>
-            <div className="card-desc">
-              Orders processed
-            </div>
+        <div className="stat-card">
+          <div className="stat-label">Revenue</div>
+          <div className="stat-value stat-green">
+            ₹{revenue.toLocaleString()}
           </div>
         </div>
       </div>
 
-      <div className="dashboard-row">
-        <div className="glass-panel">
-          <h3>Quick Actions</h3>
-
-          <button className="action-btn">
-            <FiPlusCircle />
-            Add Product
-          </button>
-
-          <button className="action-btn">
-            <FiPlusCircle />
-            Add Customer
-          </button>
-
-          <button className="action-btn">
-            <FiPlusCircle />
-            Create Order
-          </button>
-        </div>
-
-        <div className="glass-panel">
-          <h3>
-            <FiAlertTriangle />
-            Low Stock Alerts ({lowStock.length})
-          </h3>
-
-          {lowStock.length === 0 ? (
-            <div className="alert-empty">
-              All products are sufficiently stocked.
-            </div>
-          ) : (
-            lowStock.map((p) => (
-              <div
-                key={p.id}
-                className="stock-alert-item"
-              >
-                {p.name}
-                <span>{p.stock} left</span>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      <div className="glass-panel">
-        <h3>Recent Orders</h3>
+      <div className="card">
+        <h3 style={{ marginBottom: "20px" }}>
+          Recent Orders
+        </h3>
 
         {orders.length === 0 ? (
-          <div className="alert-empty">
+          <div className="empty">
             No orders available
           </div>
         ) : (
@@ -161,37 +80,36 @@ export default function Dashboard() {
               </thead>
 
               <tbody>
-                {orders
-                  .slice(-10)
-                  .reverse()
-                  .map((o) => (
-                    <tr key={o.id}>
-                      <td>#{o.id}</td>
-                      <td>
-                        {o.product?.name ||
-                          o.product_id}
-                      </td>
-                      <td>
-                        {o.customer?.name ||
-                          o.customer_id}
-                      </td>
-                      <td>{o.quantity}</td>
-                      <td>
-                        ₹
-                        {o.total_price.toLocaleString()}
-                      </td>
-                      <td>
-                        <span className="badge badge-green">
-                          {o.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                {orders.slice(0, 5).map((order) => (
+                  <tr key={order.id}>
+                    <td>#{order.id}</td>
+                    <td>
+                      {order.product?.name ||
+                        order.product_id}
+                    </td>
+                    <td>
+                      {order.customer?.name ||
+                        order.customer_id}
+                    </td>
+                    <td>{order.quantity}</td>
+                    <td>
+                      ₹
+                      {Number(
+                        order.total_price || 0
+                      ).toLocaleString()}
+                    </td>
+                    <td>
+                      <span className="badge badge-green">
+                        {order.status || "pending"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
