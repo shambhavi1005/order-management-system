@@ -9,10 +9,11 @@
 }
 
 :root {
-  --bg: #f4f7fb;
+  --bg: #f5f7fb;
   --surface: #ffffff;
   --surface2: #f8fafc;
-  --border: #e2e8f0;
+  --text: #0f172a;
+
 
   --accent: #2563eb;
   --accent2: #06b6d4;
